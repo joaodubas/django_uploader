@@ -10,3 +10,7 @@ DATABASES = {
         'NAME': ROOT('db', 'local.sqlite'),
     }
 }
+
+INSTALLED_APPS += (
+    'upmedia',
+)

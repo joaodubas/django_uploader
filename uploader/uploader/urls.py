@@ -7,7 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'uploader.views.home', name='home'),
-    # url(r'^uploader/', include('uploader.foo.urls')),
+    url(r'^up/', include('upmedia.urls', namespace='media')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
