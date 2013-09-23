@@ -1,0 +1,22 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta
+      name="viewport"
+      content="width:device-width, initial-scale=1.0, maximun-scale=3.0">
+  <title>uploader</title>
+  <link
+      rel="stylesheet"
+      href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+  <link
+      rel="stylesheet"
+      href="{% static 'bower_components/bootstrap/dist/css/bootstrap-theme.min.css' %}">
+  {% block extra_css %}{% endblock extra_css %}
+</head>
+<body>
+  <div class="container">{% block content %}{% endblock content %}</div>
+  {% block extra_js %}{% endblock extra_js %}
+</body>
+</html>
