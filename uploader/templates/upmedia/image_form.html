@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+{% for js in form.media.render_js %}
+{{ js }}
+{% endfor %}
+<script>
+function getCookie(name) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie != '') {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = jQuery.trim(cookies[i]);
+      // Does this cookie string begin with the name we want?
+      if (cookie.substring(0, name.length + 1) == (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+(function (window, document, $, undefined) {
+  var csrftoken = getCookie('csrftoken');
+  $('#{{ form.image.id_for_label }}').fileupload({
+    url: '{% url "media:image_create" %}',
+    dataType: 'json',
+    beforeSend: function (xhr, settings) {
+      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+    },
+    done: function (e, data) {
+      $.each(data.result.files, function (index, file) {
+        $('<p/>').text(file.name).appendTo(document.body);
+      });
+    }
+  });
+})(this, this.document, jQuery);
+</script>
+{% endblock extra_js %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <form method="POST" action="." role="form" class="form-horizontal">
+      <fieldset>
+        <legend>Upload Imagem</legend>
+        {% for field in form %}
+        <div class="form-group">
+          <label
+              class="col-md-2"
+              for="{{ field.id_for_label }}">{{ field.label }}</label>
+          <div class="col-md-10">
+            {{ field }}
+          </div>
+        </div>
+        {% endfor %}
+      </fieldset>
+      <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+          <button type="submit" class="btn btn-default">Salvar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}
