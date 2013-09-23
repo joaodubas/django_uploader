@@ -1,2 +1,4 @@
 Django==1.5.4
 Pillow==2.1.0
+Pillow-PIL==0.1dev
+South==0.8.2
