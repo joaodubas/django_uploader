@@ -1,17 +1,18 @@
 CMD_BASE=python manage.py
+ROOT_PATH=./uploader
 
-SET_TEST=pandora.settings.test
+SET_TEST=uploader.settings.test
 
-SET_LOCAL=pandora.settings.local
-PORT_LOCAL=8061
+SET_LOCAL=uploader.settings.local
+PORT_LOCAL=8031
 ADDR_LOCAL=0.0.0.0
 
 test:
-	@cd ./pandora; \
+	@cd $(ROOT_PATH); \
 	$(CMD_BASE) test --verbosity=2 --settings=$(SET_TEST)
 
 coverage:
-	@cd ./pandora; \
+	@cd $(ROOT_PATH); \
 	$(CMD_BASE) test \
 		--verbosity=2 \
 		--with-coverage \
@@ -19,15 +20,15 @@ coverage:
 		--settings=$(SET_TEST)
 
 run:
-	@cd ./pandora; \
+	@cd $(ROOT_PATH); \
 	$(CMD_BASE) $(cmd) --settings=$(SET_LOCAL)
 
 runserver:
-	@cd ./pandora; \
+	@cd $(ROOT_PATH); \
 	$(CMD_BASE) runserver $(ADDR_LOCAL):$(PORT_LOCAL) --settings=$(SET_LOCAL)
 
 shell:
-	@cd ./pandora; \
+	@cd $(ROOT_PATH); \
 	$(CMD_BASE) shell --settings=$(SET_LOCAL)
 
 start:
