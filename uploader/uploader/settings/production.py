@@ -7,6 +7,6 @@ TEMPLATE_DEBUG = DEBUG
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ROOT('db'),
+        'NAME': ROOT('db', 'production.sqlite'),
     }
 }
