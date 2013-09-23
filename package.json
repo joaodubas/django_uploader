@@ -1,0 +1,26 @@
+{
+  "name": "django_uploader",
+  "author": "João Paulo Dubas <joao.dubas@gmail.com>",
+  "version": "0.0.1",
+  "description": "Example application to handle image uploads with Django.",
+  "scripts": {
+    "start": "make runserver",
+    "prepublish": "./node_modules/.bin/bower install",
+    "test": "make test",
+    "coverage": "make coverage"
+  },
+  "main": "./lib/boot.js",
+  "keywords": [
+    "python",
+    "django",
+    "file upload"
+  ],
+  "devDependencies": {
+    "bower": "1.2.x"
+  },
+  "license": "MIT",
+  "engine": {
+    "node": ">=0.10.0"
+  }
+}
+

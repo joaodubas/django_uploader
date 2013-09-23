@@ -1,0 +1,16 @@
+{
+  "name": "django_uploader",
+  "author": "João Paulo Dubas <joao.dubas@gmail.com>",
+  "version": "0.0.1",
+  "description": "Example django application to handle file upload.",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "**/static/bower_components",
+    "**/assets"
+  ],
+  "dependencies": {
+    "jquery-file-upload": "~8.8.5",
+    "bootstrap": "~3.0.0"
+  }
+}
