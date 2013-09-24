@@ -5,23 +5,29 @@
 {{ js }}
 {% endfor %}
 <script>
-function getCookie(name) {
-  var cookieValue = null;
-  if (document.cookie && document.cookie != '') {
-    var cookies = document.cookie.split(';');
-    for (var i = 0; i < cookies.length; i++) {
-      var cookie = jQuery.trim(cookies[i]);
-      // Does this cookie string begin with the name we want?
-      if (cookie.substring(0, name.length + 1) == (name + '=')) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
+(function (window, document, $, undefined) {
+  'use strict';
+  function getCookie(name) {
+    var cookieValue = null;
+    var selector = null;
+    if (document.cookie && document.cookie != '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = jQuery.trim(cookies[i]);
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
       }
     }
+    if (!cookieValue) {
+      selector = 'input[type="hidden"][name="csrfmiddlewaretoken"]';
+      cookieValue = document.querySelector(selector).value;
+    }
+    return cookieValue;
   }
-  return cookieValue;
-}
 
-(function (window, document, $, undefined) {
   var csrftoken = getCookie('csrftoken');
   $('#{{ form.image.id_for_label }}').fileupload({
     url: '{% url "media:image_create" %}',
@@ -30,6 +36,7 @@ function getCookie(name) {
       xhr.setRequestHeader("X-CSRFToken", csrftoken);
     },
     done: function (e, data) {
+      console.log(data.result);
       $.each(data.result.files, function (index, file) {
         $('<p/>').text(file.name).appendTo(document.body);
       });
@@ -43,6 +50,7 @@ function getCookie(name) {
 <div class="row">
   <div class="col-md-12">
     <form method="POST" action="." role="form" class="form-horizontal">
+      {% csrf_token %}
       <fieldset>
         <legend>Upload Imagem</legend>
         {% for field in form %}
