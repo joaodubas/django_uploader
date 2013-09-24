@@ -50,20 +50,31 @@ ul[data-js-for="#{{ form.image.id_for_label }}"]>li:last-child {
     return cookieValue;
   }
 
+  function setTargetList(attr) {
+    if (targetList) return true;
+    targetList = $('ul[data-js-for="#' + attr + '"]');
+  }
+
   var csrftoken = getCookie('csrftoken');
   var targetList = null;
+
   $('#{{ form.image.id_for_label }}').fileupload({
     url: '{% url "media:image_create" %}',
     dataType: 'json',
     beforeSend: function (xhr, settings) {
       xhr.setRequestHeader("X-CSRFToken", csrftoken);
     },
+    add: function (e, data) {
+      setTargetList(e.target.id);
+      data.context = $('<li/>').text('Uploading...').appendTo(targetList);
+      data.submit();
+    },
     done: function (e, data) {
       if (!targetList) {
         targetList = $('ul[data-js-for="#' + e.target.id + '"]');
       }
       $.each(data.result.files, function (index, file) {
-        $('<li/>').text(file.name).appendTo(targetList);
+        data.context.text(file.name);
       });
     }
   });
