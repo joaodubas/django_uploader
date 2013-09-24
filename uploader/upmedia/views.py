@@ -2,8 +2,9 @@
 import json
 import mimetypes
 import re
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from .forms import ImageForm
 from .models import Image
 
@@ -23,8 +24,7 @@ def serialize(instance, file_attr='file'):
         'type': mimetypes.guess_type(obj.path)[0] or 'image/png',
         'thumbnailUrl': obj.url,
         'size': obj.size,
-        # 'deleteUrl': reverse('upload-delete', args=[instance.pk]),
-        'deleteUrl': '',
+        'deleteUrl': reverse('media:image_delete', args=[instance.pk]),
         'deleteType': 'DELETE',
     }
 
@@ -49,3 +49,7 @@ class ImageCreateView(UploaderResponseMixin, CreateView):
 class ImageUpdateView(UploaderResponseMixin, UpdateView):
     model = Image
     form_class = ImageForm
+
+
+class ImageDeleteView(DeleteView):
+    model = Image
