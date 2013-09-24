@@ -1,8 +1,30 @@
 {% extends "base.html" %}
 
+{% block extra_css %}
+<style>
+@-webkit-keyframes showin {
+  from { opacity: 0; height: 0; }
+  to { opacity: 1; height: auto; }
+}
+@keyframes showin {
+  from { opacity: 0; height: 0; }
+  to { opacity: 1; height: auto; }
+}
+
+ul[data-js-for="#{{ form.image.id_for_label }}"]>li:last-child {
+  opacity: 0;
+  -webkit-animation: showin 0.25s 0.0725s both;
+  -moz-animation: showin 0.25s 0.0725s both;
+  -ms-animation: showin 0.25s 0.0725s both;
+  -o-animation: showin 0.25s 0.0725s both;
+  animation: showin 0.25s 0.0725s both;
+}
+</style>
+{% endblock extra_css %}
+
 {% block extra_js %}
 {% for js in form.media.render_js %}
-{{ js }}
+  {{ js }}
 {% endfor %}
 <script>
 (function (window, document, $, undefined) {
@@ -29,6 +51,7 @@
   }
 
   var csrftoken = getCookie('csrftoken');
+  var targetList = null;
   $('#{{ form.image.id_for_label }}').fileupload({
     url: '{% url "media:image_create" %}',
     dataType: 'json',
@@ -36,9 +59,11 @@
       xhr.setRequestHeader("X-CSRFToken", csrftoken);
     },
     done: function (e, data) {
-      console.log(data.result);
+      if (!targetList) {
+        targetList = $('ul[data-js-for="#' + e.target.id + '"]');
+      }
       $.each(data.result.files, function (index, file) {
-        $('<p/>').text(file.name).appendTo(document.body);
+        $('<li/>').text(file.name).appendTo(targetList);
       });
     }
   });
@@ -60,6 +85,15 @@
               for="{{ field.id_for_label }}">{{ field.label }}</label>
           <div class="col-md-10">
             {{ field }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-offset-2 col-md-10">
+            <ul
+                class="list-unstyled"
+                data-js-for="#{{ form.image.id_for_label }}">
+              <li>hello</li>
+            </ul>
           </div>
         </div>
         {% endfor %}
